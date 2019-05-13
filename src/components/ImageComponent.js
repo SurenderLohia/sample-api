@@ -5,24 +5,45 @@ import '../style.css';
 export default class ImageComponent extends React.Component {
 
   state = {
-    dogImages: null
+    dogImage: null,
+    isLoading: true,
+    hasError: false
   }
 
   componentDidMount() {
-    axios.get(`https://dog.ceo/api/breeds/image/random/2`).then(res => {
-      console.log(res);
+    axios.get(`https://dog.ceo/api/breeds/image/random`).then(res => {
       this.setState({ dogImages: res.data.message })
-    })
+    }).catch(error => {
+      this.setState({hasError: true});
+    }).finally(() => {
+      this.setState({ isLoading: false })
+    });
   }
 
   render() {
-    const { dogImages } = this.state;
+    const { dogImages, isLoading, hasError } = this.state;
     return(
-      <ul>
-        {dogImages && dogImages.map(dogImage => (
-          <li key={dogImage.id}><img src={dogImage} width="200" /></li>
-        ))}
-      </ul>
+      <div>
+        {isLoading && <div>Loading...</div>}
+
+        {
+          !isLoading && (
+            !hasError &&
+              <div>
+                <img src={dogImages} width="200" />
+              </div>
+          )
+        }
+
+        {
+          !isLoading && (
+            hasError &&
+              <div>
+                Unable to get Image
+              </div>
+          )
+        }
+      </div>
     )
   }
 };
