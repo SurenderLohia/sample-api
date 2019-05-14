@@ -1,6 +1,32 @@
-ul {
-  display: flex;
+.dogSingleImage {
+  width: 400px;
+  margin: 50px auto;
 }
-li {
-  list-style: none;
+.container {
+  width: 400px;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  border: 1px solid #d2d2d2;
+}
+.container img {
+  width: 100%;
+}
+.dogSingleImage button {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+  padding: .375rem 0;
+  width: 170px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1.5;
+  outline: none;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.dogSingleImage button:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
 }
