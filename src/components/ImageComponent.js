@@ -5,44 +5,35 @@ import '../style.css';
 export default class ImageComponent extends React.Component {
 
   state = {
-    dogImage: null,
-    isLoading: true,
-    hasError: false
+    dogImages: null,
+    errorMsg: "",
+    isLoading: false,
   }
 
   componentDidMount() {
-    axios.get(`https://dog.ceo/api/breeds/image/random`).then(res => {
-      this.setState({ dogImages: res.data.message })
-    }).catch(error => {
-      this.setState({hasError: true});
-    }).finally(() => {
-      this.setState({ isLoading: false })
-    });
+    this.fetchDogs();
   }
 
+  fetchDogs() {
+    this.setState({ isLoading: true })
+    axios.get(`https://dog.ceo/api/breeds/image/random/1`).then(res => {
+      console.log(res);
+      this.setState({ dogImages: res.data.message, isLoading: false })
+    }).catch(err => {
+      console.log(err);
+      this.setState({ errorMsg:" No results found"})
+    });
+  }
+ 
   render() {
-    const { dogImages, isLoading, hasError } = this.state;
+    const { dogImages, errorMsg, isLoading } = this.state;
     return(
-      <div>
-        {isLoading && <div>Loading...</div>}
-
-        {
-          !isLoading && (
-            !hasError &&
-              <div>
-                <img src={dogImages} width="200" />
-              </div>
-          )
-        }
-
-        {
-          !isLoading && (
-            hasError &&
-              <div>
-                Unable to get Image
-              </div>
-          )
-        }
+      <div className="dogSingleImage">
+        { errorMsg && <p>{errorMsg}</p> }
+        <div className="container">
+          { dogImages ?  <img src={dogImages} alt="dogs" /> : <p>Loading.....</p> }
+        </div>
+        <button onClick={() => this.fetchDogs()}>{ isLoading ? "Fetching..." : "Fetch" }</button>
       </div>
     )
   }
