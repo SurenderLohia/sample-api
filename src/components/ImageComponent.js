@@ -24,16 +24,33 @@ export default class ImageComponent extends React.Component {
       this.setState({ errorMsg:" No results found"})
     });
   }
- 
+
+  Loading() {
+    return <p>Loading.....</p>;
+  }
+
+  Content(errorMsg, dogImage) {
+    let dynamicContent;
+    if(errorMsg) {
+      dynamicContent = <p>{errorMsg}</p>;
+    } else {
+      dynamicContent = <img src={dogImage} alt="dogs" />;
+    }
+
+
+    return <div>
+      {dynamicContent}
+      <button onClick={() => this.fetchDogs()}>Fetch</button>
+    </div>
+  }
+
   render() {
     const { dogImage, errorMsg, isLoading } = this.state;
     return(
       <div className="dogSingleImage">
-        { errorMsg && <p>{errorMsg}</p> }
-        <div className="container">
-          { isLoading ? <p>Loading.....</p> : <img src={dogImage} alt="dogs" /> }
+        <div className="container"> 
+          { isLoading ? this.Loading() : this.Content(errorMsg, dogImage) }
         </div>
-        <button onClick={() => this.fetchDogs()}>Fetch</button>
       </div>
     )
   }
